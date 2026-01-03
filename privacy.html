@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Theme initialization - prevents flash -->
+    <script>
+        (function() {
+            const theme = localStorage.getItem('paskey-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy & Security - Paskey</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --error: #ef4444;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --text: #f3f4f6;
+            --text-light: #9ca3af;
+            --bg: #111827;
+            --card-bg: #1f2937;
+            --border: #374151;
+        }
+
+        html { background: var(--bg); }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .updated {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin: 40px 0 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .icon { font-size: 24px; }
+
+        h3 {
+            font-size: 16px;
+            margin: 24px 0 12px;
+            color: var(--text);
+        }
+
+        p, li {
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        li { margin-bottom: 8px; }
+
+        .highlight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid var(--primary);
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .highlight p { margin: 0; color: var(--text); }
+        .highlight strong { color: var(--primary); }
+
+        .security-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 12px;
+        }
+
+        .security-box p { margin: 0; color: var(--text); }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error);
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 12px;
+        }
+
+        .warning-box p { margin: 0; color: var(--text); }
+
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .tech-table th, .tech-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tech-table th {
+            background: var(--bg);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .tech-table td {
+            color: var(--text-light);
+        }
+
+        code {
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--primary);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover { text-decoration: underline; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 40px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .back-link:hover {
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .toc {
+            background: var(--bg);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .toc h3 {
+            margin: 0 0 16px 0;
+            color: var(--text);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+
+        .toc li { margin: 0; }
+
+        .toc a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .toc a:hover {
+            background: var(--card-bg);
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px; }
+            h1 { font-size: 28px; }
+            h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="logo-link">
+                <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                    <rect width="48" height="48" rx="12" fill="url(#grad)"/>
+                    <path d="M24 14c-5.5 0-10 4.5-10 10v6h-2c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2h-2v-6c0-5.5-4.5-10-10-10zm0 4c3.3 0 6 2.7 6 6v6H18v-6c0-3.3 2.7-6 6-6z" fill="white"/>
+                    <defs>
+                        <linearGradient id="grad" x1="0" y1="0" x2="48" y2="48">
+                            <stop stop-color="#667eea"/>
+                            <stop offset="1" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="brand">Paskey</span>
+            </a>
+        </header>
+
+        <h1>Privacy & Security</h1>
+        <p class="updated">Last updated: January 2025</p>
+
+        <div class="highlight">
+            <p><strong>Zero-Knowledge Architecture:</strong> Paskey is designed so that your passwords are never transmitted, stored, or known by anyone but you. All password generation happens 100% locally in your browser using cryptographic algorithms.</p>
+        </div>
+
+        <nav class="toc">
+            <h3>Contents</h3>
+            <ul>
+                <li><a href="#security-overview">Security Overview</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#data-collection">Data Collection</a></li>
+                <li><a href="#data-storage">Data Storage</a></li>
+                <li><a href="#security-measures">Security Measures</a></li>
+                <li><a href="#your-rights">Your Rights</a></li>
+                <li><a href="#disclaimer">Legal Disclaimer</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <section id="security-overview">
+            <h2><span class="icon">🛡️</span> Security Overview</h2>
+
+            <div class="security-box">
+                <p><strong>Key Principle:</strong> Paskey uses a deterministic password generation algorithm. Your passwords are mathematically derived from your inputs and are never stored anywhere - not on our servers, not in databases, not even in your browser's storage.</p>
+            </div>
+
+            <h3>What Makes Paskey Secure</h3>
+            <ul>
+                <li><strong>No Password Storage:</strong> Unlike traditional password managers, we don't store your passwords. They're generated on-demand.</li>
+                <li><strong>Client-Side Only:</strong> All cryptographic operations happen in your browser. Nothing sensitive ever leaves your device.</li>
+                <li><strong>Deterministic Generation:</strong> Same inputs always produce the same password, so you can regenerate it anytime.</li>
+                <li><strong>Strong Cryptography:</strong> Industry-standard PBKDF2 (100,000 iterations) and HMAC-SHA256 algorithms.</li>
+            </ul>
+        </section>
+
+        <section id="how-it-works">
+            <h2><span class="icon">⚙️</span> How Password Generation Works</h2>
+
+            <p>Understanding how Paskey generates passwords helps you appreciate its security model:</p>
+
+            <h3>Step 1: Key Derivation</h3>
+            <p>When you sign in, a unique cryptographic key is derived from:</p>
+            <ul>
+                <li>Your Google account's unique identifier (UID)</li>
+                <li>A random salt stored in your Firestore profile</li>
+            </ul>
+            <p>This uses <strong>PBKDF2 with 100,000 iterations</strong> of SHA-256, making brute-force attacks computationally infeasible.</p>
+
+            <h3>Step 2: Password Generation</h3>
+            <p>When you generate a password, the following inputs are combined:</p>
+            <ul>
+                <li>Your unique key (from Step 1)</li>
+                <li>Your secret phrase (entered by you)</li>
+                <li>The domain name</li>
+                <li>Username (optional)</li>
+                <li>Version number</li>
+            </ul>
+            <p>These are processed through <strong>HMAC-SHA256</strong> to produce a deterministic password.</p>
+
+            <h3>Technical Specifications</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Component</th>
+                    <th>Algorithm/Specification</th>
+                </tr>
+                <tr>
+                    <td>Key Derivation</td>
+                    <td>PBKDF2-HMAC-SHA256, 100,000 iterations</td>
+                </tr>
+                <tr>
+                    <td>Password Generation</td>
+                    <td>HMAC-SHA256</td>
+                </tr>
+                <tr>
+                    <td>Domain History Encryption</td>
+                    <td>AES-256-GCM</td>
+                </tr>
+                <tr>
+                    <td>Salt Length</td>
+                    <td>256 bits (32 bytes)</td>
+                </tr>
+                <tr>
+                    <td>Default Password Length</td>
+                    <td>16 characters (configurable 8-64)</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="data-collection">
+            <h2><span class="icon">📊</span> Data We Collect</h2>
+
+            <h3>Information We Collect</h3>
+            <ul>
+                <li><strong>Google Account Info:</strong> Email, display name, and profile picture (for authentication and display purposes only)</li>
+                <li><strong>Cryptographic Salt:</strong> A random value unique to your account, used for key derivation</li>
+                <li><strong>Encrypted Domain History:</strong> The names of domains you've generated passwords for (encrypted with your unique key)</li>
+            </ul>
+
+            <h3>Information We NEVER Collect or Store</h3>
+            <div class="warning-box">
+                <p>The following are <strong>NEVER</strong> transmitted to or stored on our servers:</p>
+            </div>
+            <ul>
+                <li>Your secret phrase</li>
+                <li>Your generated passwords</li>
+                <li>Your master key or any derived cryptographic keys</li>
+                <li>Any data that could be used to recreate or guess your passwords</li>
+                <li>Browsing history or website activity</li>
+                <li>Personal files or documents</li>
+            </ul>
+        </section>
+
+        <section id="data-storage">
+            <h2><span class="icon">💾</span> Data Storage</h2>
+
+            <h3>Local Storage (Your Browser)</h3>
+            <ul>
+                <li><strong>Theme Preference:</strong> Light/dark mode setting</li>
+                <li><strong>Session Data:</strong> Temporary authentication tokens (encrypted)</li>
+            </ul>
+
+            <h3>Cloud Storage (Firebase Firestore)</h3>
+            <ul>
+                <li><strong>User Document:</strong> Contains your email, salt, and encrypted domain list</li>
+                <li><strong>Security Rules:</strong> Each user can only access their own document</li>
+            </ul>
+
+            <h3>Data Encryption</h3>
+            <p>Domain history is encrypted using AES-256-GCM before being stored. The encryption key is derived from your unique key and never leaves your browser.</p>
+        </section>
+
+        <section id="security-measures">
+            <h2><span class="icon">🔒</span> Security Measures</h2>
+
+            <h3>Automatic Security Features</h3>
+            <table class="tech-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Password Auto-Clear</td>
+                    <td>Generated password clears from display after 60 seconds</td>
+                </tr>
+                <tr>
+                    <td>Clipboard Auto-Clear</td>
+                    <td>Clipboard is cleared 30 seconds after copying</td>
+                </tr>
+                <tr>
+                    <td>Tab Switch Protection</td>
+                    <td>Secret phrase and password clear when you switch tabs</td>
+                </tr>
+                <tr>
+                    <td>Secure Input Fields</td>
+                    <td>Password fields are masked by default with toggle visibility</td>
+                </tr>
+                <tr>
+                    <td>HTTPS Only</td>
+                    <td>All connections are encrypted using TLS</td>
+                </tr>
+                <tr>
+                    <td>Content Security Policy</td>
+                    <td>Strict CSP headers prevent XSS attacks</td>
+                </tr>
+            </table>
+
+            <h3>Cryptographic Security</h3>
+            <ul>
+                <li><strong>No Modulo Bias:</strong> Password character selection uses rejection sampling for uniform distribution</li>
+                <li><strong>Web Crypto API:</strong> All cryptography uses the browser's native, audited implementation</li>
+                <li><strong>No Third-Party Crypto Libraries:</strong> Reduces supply chain attack surface</li>
+            </ul>
+        </section>
+
+        <section id="your-rights">
+            <h2><span class="icon">👤</span> Your Rights</h2>
+
+            <p>You have full control over your data:</p>
+            <ul>
+                <li><strong>Access:</strong> View your domain history anytime</li>
+                <li><strong>Delete:</strong> Clear individual domains or entire history with one click</li>
+                <li><strong>Export:</strong> Your data is visible and can be manually recorded</li>
+                <li><strong>Portability:</strong> Since passwords are deterministically generated, you can use the same inputs on any device</li>
+                <li><strong>Account Deletion:</strong> Contact us to completely delete your account and all associated data</li>
+            </ul>
+        </section>
+
+        <section id="disclaimer">
+            <h2><span class="icon">⚖️</span> Legal Disclaimer</h2>
+
+            <div class="warning-box">
+                <p><strong>Important:</strong> Please read this section carefully.</p>
+            </div>
+
+            <h3>No Warranty</h3>
+            <p>Paskey is provided "AS IS" without warranty of any kind, express or implied. We do not warrant that the service will be uninterrupted, secure, or error-free.</p>
+
+            <h3>Limitation of Liability</h3>
+            <p>In no event shall Paskey, its creators, or contributors be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from:</p>
+            <ul>
+                <li>Your use or inability to use the service</li>
+                <li>Any unauthorized access to or use of our servers</li>
+                <li>Any loss of data or passwords</li>
+                <li>Any bugs, viruses, or similar issues transmitted through the service</li>
+            </ul>
+
+            <h3>Password Responsibility</h3>
+            <p>You are solely responsible for:</p>
+            <ul>
+                <li>Remembering your secret phrase - we cannot recover it</li>
+                <li>Keeping your Google account secure</li>
+                <li>Verifying generated passwords work before changing existing passwords</li>
+                <li>Maintaining backups of critical account recovery information</li>
+            </ul>
+
+            <h3>Not a Password Manager</h3>
+            <p>Paskey is a password <em>generator</em>, not a password manager. We do not store your passwords. If you forget your secret phrase or lose access to your Google account, your generated passwords cannot be recovered.</p>
+
+            <h3>Third-Party Services</h3>
+            <p>Paskey uses the following third-party services:</p>
+            <ul>
+                <li><strong>Google Authentication:</strong> Subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a></li>
+                <li><strong>Firebase/Firestore:</strong> Subject to <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase's Privacy Policy</a></li>
+                <li><strong>Vercel Hosting:</strong> Subject to <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel's Privacy Policy</a></li>
+            </ul>
+        </section>
+
+        <section id="contact">
+            <h2><span class="icon">📧</span> Contact</h2>
+
+            <p>For privacy-related inquiries, security concerns, or data deletion requests:</p>
+            <ul>
+                <li>Open an issue on our <a href="https://github.com" target="_blank" rel="noopener">GitHub repository</a></li>
+                <li>Email: [Your contact email]</li>
+            </ul>
+
+            <h3>Security Vulnerabilities</h3>
+            <p>If you discover a security vulnerability, please report it responsibly by contacting us directly rather than posting publicly. We appreciate your help in keeping Paskey secure.</p>
+        </section>
+
+        <section id="changes">
+            <h2><span class="icon">📝</span> Changes to This Policy</h2>
+            <p>We may update this privacy and security policy from time to time. We will notify you of any significant changes by updating the "Last updated" date at the top of this page. We encourage you to review this policy periodically.</p>
+        </section>
+
+        <a href="/" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Paskey
+        </a>
+
+        <footer>
+            <p>&copy; 2025 Paskey. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
