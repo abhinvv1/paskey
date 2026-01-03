@@ -146,8 +146,9 @@ async function generatePassword() {
         elements.generatedPassword.type = 'password';
         elements.resultSection.classList.remove('hidden');
 
-        // Add to history
-        await Auth.addDomainToHistory(domain);
+        // Add to history with version
+        const version = parseInt(elements.version.value) || 1;
+        await Auth.addDomainToHistory(domain, version);
         await loadHistory();
 
         // Auto-clear after 60s
@@ -205,10 +206,13 @@ async function loadHistory() {
     }
 
     elements.historyList.innerHTML = history.map(item => `
-        <div class="history-item" data-domain="${escapeHtml(item.domain)}">
+        <div class="history-item" data-domain="${escapeHtml(item.domain)}" data-version="${item.version || 1}">
             <div>
                 <div class="history-item-domain">${escapeHtml(item.domain)}</div>
-                <div class="history-item-date">${formatDate(item.timestamp)}</div>
+                <div class="history-item-meta">
+                    <span class="history-item-date">${formatDate(item.timestamp)}</span>
+                    ${item.version && item.version > 1 ? `<span class="history-item-version">v${item.version}</span>` : ''}
+                </div>
             </div>
             <div class="history-item-actions">
                 <button class="delete-history-item" title="Remove">
@@ -224,8 +228,11 @@ async function loadHistory() {
     elements.historyList.querySelectorAll('.history-item').forEach(item => {
         item.addEventListener('click', (e) => {
             if (!e.target.closest('.delete-history-item')) {
+                // Auto-fill domain and version
                 elements.domain.value = item.dataset.domain;
-                elements.domain.focus();
+                elements.version.value = item.dataset.version || 1;
+                elements.secretPhrase.focus();
+                showToast('Domain & version loaded', 'info');
             }
         });
 

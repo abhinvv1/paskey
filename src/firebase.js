@@ -177,8 +177,10 @@ export const Auth = {
 
     /**
      * Add domain to history (encrypted)
+     * @param {string} domain - The domain name
+     * @param {number} version - The version number used for this domain
      */
-    async addDomainToHistory(domain) {
+    async addDomainToHistory(domain, version = 1) {
         if (!this.currentUser || !this.encryptionKey) return;
 
         try {
@@ -187,9 +189,10 @@ export const Auth = {
             // First, remove any existing entry for this domain
             await this.removeDomainFromHistory(domain);
 
-            // Create encrypted entry
+            // Create encrypted entry with version
             const entry = JSON.stringify({
                 domain: domain.toLowerCase(),
+                version: version,
                 timestamp: Date.now()
             });
 
