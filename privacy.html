@@ -319,61 +319,30 @@
                 <li><strong>No Password Storage:</strong> Unlike traditional password managers, we don't store your passwords. They're generated on-demand.</li>
                 <li><strong>Client-Side Only:</strong> All cryptographic operations happen in your browser. Nothing sensitive ever leaves your device.</li>
                 <li><strong>Deterministic Generation:</strong> Same inputs always produce the same password, so you can regenerate it anytime.</li>
-                <li><strong>Strong Cryptography:</strong> Industry-standard PBKDF2 (100,000 iterations) and HMAC-SHA256 algorithms.</li>
+                <li><strong>Strong Cryptography:</strong> Industry-standard cryptographic algorithms designed to resist brute-force attacks.</li>
             </ul>
         </section>
 
         <section id="how-it-works">
             <h2><span class="icon">⚙️</span> How Password Generation Works</h2>
 
-            <p>Understanding how Paskey generates passwords helps you appreciate its security model:</p>
+            <p>Paskey generates passwords using a secure, deterministic process:</p>
 
-            <h3>Step 1: Key Derivation</h3>
-            <p>When you sign in, a unique cryptographic key is derived from:</p>
+            <h3>The Process</h3>
             <ul>
-                <li>Your Google account's unique identifier (UID)</li>
-                <li>A random salt stored in your Firestore profile</li>
+                <li><strong>Authentication:</strong> You sign in with your Google account to establish your identity</li>
+                <li><strong>Your Inputs:</strong> You provide a secret phrase, domain name, and optional settings</li>
+                <li><strong>Local Generation:</strong> Your browser combines these inputs using cryptographic functions to generate a unique password</li>
+                <li><strong>Consistency:</strong> The same inputs will always produce the same password on any device</li>
             </ul>
-            <p>This uses <strong>PBKDF2 with 100,000 iterations</strong> of SHA-256, making brute-force attacks computationally infeasible.</p>
 
-            <h3>Step 2: Password Generation</h3>
-            <p>When you generate a password, the following inputs are combined:</p>
+            <h3>What This Means For You</h3>
             <ul>
-                <li>Your unique key (from Step 1)</li>
-                <li>Your secret phrase (entered by you)</li>
-                <li>The domain name</li>
-                <li>Username (optional)</li>
-                <li>Version number</li>
+                <li>You only need to remember your secret phrase</li>
+                <li>Your passwords are never transmitted over the network</li>
+                <li>Even if our servers were compromised, your passwords remain safe</li>
+                <li>You can generate the same password on any device by using the same inputs</li>
             </ul>
-            <p>These are processed through <strong>HMAC-SHA256</strong> to produce a deterministic password.</p>
-
-            <h3>Technical Specifications</h3>
-            <table class="tech-table">
-                <tr>
-                    <th>Component</th>
-                    <th>Algorithm/Specification</th>
-                </tr>
-                <tr>
-                    <td>Key Derivation</td>
-                    <td>PBKDF2-HMAC-SHA256, 100,000 iterations</td>
-                </tr>
-                <tr>
-                    <td>Password Generation</td>
-                    <td>HMAC-SHA256</td>
-                </tr>
-                <tr>
-                    <td>Domain History Encryption</td>
-                    <td>AES-256-GCM</td>
-                </tr>
-                <tr>
-                    <td>Salt Length</td>
-                    <td>256 bits (32 bytes)</td>
-                </tr>
-                <tr>
-                    <td>Default Password Length</td>
-                    <td>16 characters (configurable 8-64)</td>
-                </tr>
-            </table>
         </section>
 
         <section id="data-collection">
@@ -382,8 +351,8 @@
             <h3>Information We Collect</h3>
             <ul>
                 <li><strong>Google Account Info:</strong> Email, display name, and profile picture (for authentication and display purposes only)</li>
-                <li><strong>Cryptographic Salt:</strong> A random value unique to your account, used for key derivation</li>
-                <li><strong>Encrypted Domain History:</strong> The names of domains you've generated passwords for (encrypted with your unique key)</li>
+                <li><strong>Account-Specific Data:</strong> Random values unique to your account required for password generation</li>
+                <li><strong>Encrypted Domain History:</strong> The names of domains you've generated passwords for (encrypted before storage)</li>
             </ul>
 
             <h3>Information We NEVER Collect or Store</h3>
@@ -411,12 +380,12 @@
 
             <h3>Cloud Storage (Firebase Firestore)</h3>
             <ul>
-                <li><strong>User Document:</strong> Contains your email, salt, and encrypted domain list</li>
+                <li><strong>User Document:</strong> Contains your email and encrypted domain list</li>
                 <li><strong>Security Rules:</strong> Each user can only access their own document</li>
             </ul>
 
             <h3>Data Encryption</h3>
-            <p>Domain history is encrypted using AES-256-GCM before being stored. The encryption key is derived from your unique key and never leaves your browser.</p>
+            <p>Domain history is encrypted before being stored. The encryption key never leaves your browser and is not stored on our servers.</p>
         </section>
 
         <section id="security-measures">
@@ -456,9 +425,9 @@
 
             <h3>Cryptographic Security</h3>
             <ul>
-                <li><strong>No Modulo Bias:</strong> Password character selection uses rejection sampling for uniform distribution</li>
                 <li><strong>Web Crypto API:</strong> All cryptography uses the browser's native, audited implementation</li>
                 <li><strong>No Third-Party Crypto Libraries:</strong> Reduces supply chain attack surface</li>
+                <li><strong>Secure Random Generation:</strong> Password characters are selected with uniform distribution</li>
             </ul>
         </section>
 
